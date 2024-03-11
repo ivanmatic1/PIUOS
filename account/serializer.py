@@ -1,6 +1,7 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-
+from django.contrib.auth import authenticate
 
 class RegisterSerializer(serializers.Serializer): #seriaizer za registraciju korisnika
     first_name = serializers.CharField()
@@ -22,5 +23,28 @@ class RegisterSerializer(serializers.Serializer): #seriaizer za registraciju kor
             username = validated_data['username'].lower()                
         )
         user.set_password(validated_data['password'])
-
+        user.save()
         return validated_data
+    
+class LoginSerializer(serializers.Serializer): #serializer za login korisnika
+    username  =  serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data): #funkcija za validiranje korisnika
+        
+        if not User.objects.filter(username = data['username']).exists(): #ukoliko korisnik upise krivi username, javlja poruku
+            raise serializers.ValidationError('Account not found')
+        
+        return data #else vraća unesene podatke
+    
+    def get_jwt_token(self, data): #funkcija za dohvacanje jwt tokena
+        user = authenticate(username = data['username'], password = data['password'])
+
+        if not user:
+            return{'message' : 'Invalid credentials', 'data' : {}}
+        refresh = RefreshToken.for_user(user)
+
+        return {'message':'Login succesfull!', 'data':{'token':{
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }}}

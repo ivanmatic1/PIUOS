@@ -1,33 +1,44 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Routes, Router, RouterOutlet, RouterLink, RouterLinkActive} from '@angular/router';
+import { Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [HttpClientModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 
 export class LoginComponent {
 
-  loginObj: any = {
-    "username": "",
-    "password": ""
-  };
+  loginObj: Login;
 
-  constructor(private http: HttpClient, private router: Router){}
+
+  constructor(private http: HttpClient, private router: Router){
+    this.loginObj = new Login();
+  }
 
   onLogin(){
     this.http.post('http://127.0.0.1:8000/api/account/login/', this.loginObj).subscribe((res:any)=>{
       if(res.result){
         localStorage.setItem('loginToken', res.data.token.access);
-        this.router.navigate(['http://localhost:4200/']);
+        this.router.navigateByUrl('/');
       }else{
         alert(res.message);
       }
     })
   }
+}
+
+export class Login{
+  username: string;
+  password: string;
+  constructor(){
+    this.username = '';
+    this.password = '';
+    }
 }

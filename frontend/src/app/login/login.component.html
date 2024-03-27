@@ -3,14 +3,14 @@
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     <div class="form-floating">
-      <input type="username" name = "username" class="form-control" [(ngModel)]="loginObj.username" id="floatingInput" placeholder="JohnDoe123">
+      <input type="username" name = "username" class="form-control" [(ngModel)]="loginObj.username" id="floatingInput" placeholder="JohnDoe123" required>
       <label for="floatingInput">Username</label>
     </div>
     <div class="form-floating">
-      <input type="password" name = "password"  class="form-control"  [(ngModel)]="loginObj.password" id="floatingPassword" placeholder="Password">
+      <input type="password" name = "password"  class="form-control"  [(ngModel)]="loginObj.password" id="floatingPassword" placeholder="Password" required>
       <label for="floatingPassword">Password</label>
     </div>
 
-    <button (click)="onLogin()" class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+    <button class="btn btn-primary w-100 py-2" type="submit" (click)="onLogin()" >Sign in</button>
   </form>
 </main>

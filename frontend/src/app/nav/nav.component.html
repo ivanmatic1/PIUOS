@@ -1,27 +1,38 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Eleventh navbar example">
-    <div class="container-fluid">
-      <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" class="navbar-brand" >Blogchain</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-  
-      <div class="collapse navbar-collapse" id="navbarsExample09">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link createpost" aria-disabled="true">Create a post</a>
-          </li>
-        </ul>
-        <form role="search">
-          <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-        </form>
-      </div>
-      <ul class="navbar-nav me-auto">
+  <div class="container-fluid">
+    <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" class="navbar-brand" >Blogchain</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample09">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link login" >Login</a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/register" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link register" >Register</a>
+          <a class="nav-link createpost" aria-disabled="true">Create a post</a>
         </li>
       </ul>
+      <form role="search">
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+      </form>
     </div>
-  </nav>
+    <ul class="navbar-nav me-auto">
+      <li *ngIf="!isAuthenticated" class="nav-item">
+        <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link login" >Login</a>
+      </li>
+      <li *ngIf="!isAuthenticated" class="nav-item">
+        <a routerLink="/register" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link register" >Register</a>
+      </li>
+      <li *ngIf="isAuthenticated" class="nav-item dropdown" (click)="toggleDropdown()">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-expanded="false">
+          Welcome, {{ username }}
+        </a>
+        <ul *ngIf="dropdownOpen" class="dropdown-menu d-grid gap-1 p-2 rounded-3 mx-0 shadow w-220px" [class.show]="dropdownOpen" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item">View Profile</a></li>
+          <li><a class="dropdown-item">Edit</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a (click)="logout()" class="dropdown-item">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

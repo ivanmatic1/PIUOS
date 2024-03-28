@@ -1,5 +1,5 @@
 import { Component, NgModule } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive} from '@angular/router';
+import { Router, RouterOutlet, RouterLink, RouterLinkActive} from '@angular/router';
 import { NavComponent } from './nav/nav.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.css',
   
 })
+
 export class AppComponent {
   title = 'frontend';
 }

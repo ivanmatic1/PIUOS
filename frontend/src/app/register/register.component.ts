@@ -22,9 +22,9 @@ export class RegisterComponent {
 
   onRegister(){
     this.http.post('http://127.0.0.1:8000/api/account/register/', this.registerObj).subscribe((res:any)=>{
-      if(res.result){
+      if(res){
         alert(res.message);
-        this.router.navigateByUrl('/');
+        this.router.navigate(['/']);
       }else{
         alert(res.data.non_field_errors);
       }

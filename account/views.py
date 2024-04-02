@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import status
+from django.core.paginator import Paginator
 class RegisterView(APIView): #view za registraciju korisnika
     
     def post(self, request): #funkcija za postanje podataka za registraciju
@@ -107,4 +108,41 @@ class UserListView(APIView):
                 'message' : 'Something went wrong'
 
             }, status = status.HTTP_400_BAD_REQUEST)
- 
+class UserDetailView(APIView):
+    def get(self, request):
+        try:
+            username = request.GET.get('username')
+            first_name = request.GET.get('first_name')
+            last_name = request.GET.get('last_name')
+
+            users = User.objects.all().order_by('?')
+
+            if username:
+                users = users.filter(username__icontains=username)
+            if first_name:
+                users = users.filter(first_name__icontains=first_name)
+            if last_name:
+                users = users.filter(last_name__icontains=last_name)
+
+            if not users.exists():
+                return Response({
+                    'data': {},
+                    'message': 'User not found'
+                }, status=status.HTTP_404_NOT_FOUND)
+
+            page_number = request.GET.get('page', 1)
+            paginator = Paginator(users, 5)
+
+            serializer = UserProfileSerializer(paginator.page(page_number), many=True)
+
+            return Response({
+                'data': serializer.data,
+                'message': 'Users fetched successfully'
+            }, status.HTTP_200_OK)
+
+        except Exception as e:
+            print(e)
+            return Response({
+                'data': {},
+                'message': 'Something went wrong or invalid page'
+            }, status=status.HTTP_400_BAD_REQUEST)

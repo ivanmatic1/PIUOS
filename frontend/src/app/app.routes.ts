@@ -3,6 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { CreateblogComponent } from './createblog/createblog.component';
+import { BlogComponent } from './blog/blog.component';
 
 export const routes: Routes = [
     {
@@ -20,6 +21,10 @@ export const routes: Routes = [
     {
         path: 'create',
         component: CreateblogComponent
+    },
+    {
+        path: 'blog/:id',
+        component: BlogComponent
     },
 ];
 

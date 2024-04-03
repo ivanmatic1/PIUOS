@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-
 export class BlogService {
   private apiUrl = 'http://127.0.0.1:8000';
 
@@ -17,10 +16,15 @@ export class BlogService {
 
     // Include the token in the HTTP headers
     const headers = new HttpHeaders({
-      'Authorization': token ? `Bearer ${token}` : ''
+      'Authorization': token ? `Bearer ${token}` : ' ' // Include empty token if no token found
     });
 
-    // Make the GET request with authentication headers
     return this.http.get<any>(`${this.apiUrl}/`, { headers });
   }
+
+  getBlogById(blogId: number): Observable<any> {
+    const url = `${this.apiUrl}/blog/${blogId}/`;
+    return this.http.get<any>(url);
+  }
+  
 }

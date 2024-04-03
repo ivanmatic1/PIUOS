@@ -6,15 +6,16 @@ from rest_framework import generics
 from .models import Blog, Comment, Like
 from rest_framework import status
 from .serializer import BlogSerializer, CommentSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.db.models import Q
 from django.core.paginator import Paginator
-from rest_framework.permissions import IsAuthenticated
 
 
 
 class PublicBlogView(APIView):  # Definicija pogleda za javni pristup blogovima
+    permission_classes = [AllowAny]
+    authentication_classes = []
     def get(self, request):  # Definicija metode za HTTP GET zahtjev
         try:
             blogs = Blog.objects.all().order_by('?')  # Dohvaćanje svih blogova nasumičnim redoslijedom

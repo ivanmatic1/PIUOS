@@ -7,8 +7,8 @@
 
     <div class="collapse navbar-collapse" id="navbarsExample09">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link createpost" aria-disabled="true">Create a post</a>
+        <li *ngIf="isAuthenticated" class="nav-item">
+          <a routerLink="/create" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link createpost">Create a post</a>
         </li>
       </ul>
       <form role="search">

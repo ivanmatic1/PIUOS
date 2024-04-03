@@ -44,7 +44,7 @@ class LoginSerializer(serializers.Serializer): #serializer za login korisnika
             return{'message' : 'Invalid credentials', 'data' : {}}
         refresh = RefreshToken.for_user(user)
 
-        return {'message':'Login succesfull!', 'data':{'token':{
+        return {'message':'Login succesfull!', 'data':{'username':data['username'],'token':{
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }}}

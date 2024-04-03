@@ -1,0 +1,32 @@
+html,
+body {
+  height: 100%;
+}
+
+.form-createblog {
+  max-width: 600px;
+  padding: 1rem;
+}
+
+.form-createblog.form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-createblog input[type="title"] {
+    margin-bottom: 25px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-createblog textarea[type="blog_text"] {
+    margin-bottom: 25px;
+    height: 250px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+ }
+
+ .form-createblog select[name="category"] {
+    margin-bottom: 25px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}

@@ -1,0 +1,23 @@
+<main class="form-createblog w-100 m-auto">
+    <form>
+      <div class="form-floating">
+        <input type="title" class="form-control" [(ngModel)]="blogData.title" name = "title" id="idtitle" placeholder="Today was a good day!" required>
+        <label for="idtitle">Title</label>
+      </div>
+      <div class="form-floating">
+        <textarea type = "blog_text" class="form-control" [(ngModel)]="blogData.blog_text" name="blog_text" id="idblogtext" placeholder="Enter your blog text" rows="6"></textarea>
+        <label for="idblogtext">Blog text</label>
+    </div>
+      <div class="form-floating">
+        <select type = "category"  [(ngModel)]="blogData.category" class="form-control" name="category" id="idcategory" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="Sport">Sport</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Technology">Technology</option>
+        </select>
+        <label for="idcategory">Category</label>
+    </div>
+    
+      <button class="btn btn-primary w-100 py-2" type="submit" (click)="onSubmit()">Publish</button>
+    </form>
+</main>

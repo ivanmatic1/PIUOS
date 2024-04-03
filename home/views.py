@@ -25,7 +25,7 @@ class PublicBlogView(APIView):  # Definicija pogleda za javni pristup blogovima
                 blogs = blogs.filter(Q(title__icontains=search) | Q(blog_text__icontains=search) | Q(category__icontains=search) | Q(user__username__icontains=search))
 
             page_number = request.GET.get('page', 1)  # Dohvaćanje broja stranice, ako nije specificiran, postavlja se na 1
-            paginator = Paginator(blogs, 5)  # Postavljanje broja blogova po stranici na 5
+            paginator = Paginator(blogs, 10)  # Postavljanje broja blogova po stranici na 5
 
             serializer = BlogSerializer(paginator.page(page_number), many=True)  # Serijalizacija podataka u JSON format
 

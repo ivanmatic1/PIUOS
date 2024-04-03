@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.http import Http404
 
 
 
@@ -163,27 +164,32 @@ class BlogView(APIView):  # Definicija pogleda za CRUD operacije s blogovima
                 'message': 'Something went wrong'  # Poruka o grešci
             }, status=status.HTTP_400_BAD_REQUEST)  # Status greške
             
-class BlogDetailView(generics.RetrieveAPIView):
-    queryset = Blog.objects.all()  # Postavljanje queryseta na sve instance modela Blog
-    serializer_class = BlogSerializer  # Postavljanje serializer klase na BlogSerializer
+class BlogDetailView(APIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    permission_classes = []
 
-    def get_serializer_context(self):
-        # Metoda koja vraća kontekst serializera
-        context = super().get_serializer_context()
-        context['request'] = self.request
-        return context
+    def get_object(self, pk):
+        try:
+            return Blog.objects.get(pk=pk)
+        except Blog.DoesNotExist:
+            raise Http404
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()  # Dohvaćanje instance bloga
-        serializer = self.get_serializer(instance)  # Serijalizacija instance
+    def get(self, request, pk, *args, **kwargs):
+        try:
+            instance = self.get_object(pk)
+            serializer = self.serializer_class(instance)
 
-        comments = instance.comments.all()  # Dohvaćanje svih komentara za odabrani blog
-        comment_serializer = CommentSerializer(comments, many=True)  # Serijalizacija komentara
+            comments = instance.comments.all()
+            comment_serializer = CommentSerializer(comments, many=True)
 
-        return Response({
-            'blog': serializer.data,  # Slanje podataka o blogu
-            'comments': comment_serializer.data  # Slanje podataka o komentarima
-        })
+            return Response({
+                'blog': serializer.data,
+                'comments': comment_serializer.data
+            })
+
+        except Http404: 
+            return Response({'message': 'Blog not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 """Ovaj dio se odnosi na komentiranje"""

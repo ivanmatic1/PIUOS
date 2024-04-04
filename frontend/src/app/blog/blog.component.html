@@ -8,10 +8,10 @@
             <span class="like-count">Liked by: {{ blog?.likes.like_number }}</span>
         </div>
         <div class="like-dislike">
-            <span class="like-button" *ngIf="isAuthenticated && userLikeChoice !== 'like'" (click)="likePost()">Like</span>
-            <span class="like-button liked" *ngIf="isAuthenticated && userLikeChoice === 'like'">Liked</span>
-            <span class="dislike-button" *ngIf="isAuthenticated && userLikeChoice !== 'dislike'" (click)="dislikePost()">Dislike</span>
-            <span class="dislike-button disliked" *ngIf="isAuthenticated && userLikeChoice === 'dislike'">Disliked</span>  
+            <span class="like-button" *ngIf="userLikeChoice !== 'like'" (click)="likePost()">Like</span>
+            <span class="like-button liked" *ngIf="userLikeChoice === 'like'">Liked</span>
+            <span class="dislike-button" *ngIf="userLikeChoice !== 'dislike'" (click)="dislikePost()">Dislike</span>
+            <span class="dislike-button disliked" *ngIf="userLikeChoice === 'dislike'">Disliked</span>  
         </div>
         <hr class="title-line">
         <h4 class="comments-title">Comments</h4>

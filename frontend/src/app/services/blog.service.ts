@@ -28,7 +28,7 @@ export class BlogService {
   }
 
   getAuthenticatedBlogDetails(blogId: number): Observable<any> {
-    const url = `${this.apiUrl}/blog/${blogId}/`;
+    const url = `${this.apiUrl}/blog_logged/${blogId}/`;
     return this.http.get<any>(url);
   }
   

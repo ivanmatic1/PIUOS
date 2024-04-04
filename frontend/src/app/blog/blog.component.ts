@@ -19,7 +19,7 @@ export class BlogComponent implements OnInit {
   blog: any;
   comments: any[] = [];
   isAuthenticated = false;
-  userLikeChoice: string | undefined;
+  userLikeChoice: string | null;
   loggedInUser: string | null = null;
 
   constructor(
@@ -28,13 +28,11 @@ export class BlogComponent implements OnInit {
     private authService: AuthService,
     private http: HttpClient,
     public dialog: MatDialog
-  ) { }
+  ) { 
+    this.userLikeChoice = null;
+  }
 
   ngOnInit(): void {
-
-    this.route.paramMap.subscribe(params => {
-      this.fetchBlogDetails(params);
-    });
 
     this.authService.isAuthenticated().subscribe(isAuthenticated => {
       this.isAuthenticated = isAuthenticated;
@@ -43,20 +41,22 @@ export class BlogComponent implements OnInit {
     this.authService.getUsername().subscribe(username => {
       this.loggedInUser = username;
     });
+
+    this.route.paramMap.subscribe(params => {
+      this.fetchBlogDetails(params);
+    });
     
   }
 
   fetchBlogDetails(params: any): void {
     const idParam = params.get('id');
-
     if (idParam !== null && !isNaN(+idParam)) {
       const blogId = +idParam;
       if (this.isAuthenticated) {
-        // User is authenticated, fetch blog details using the authenticated API
         this.blogService.getAuthenticatedBlogDetails(blogId).subscribe(
           (data: any) => {
             this.blog = data.blog;
-            this.userLikeChoice = data.blog.likes.user_like_choice;
+            this.userLikeChoice = data.user_likes.like_choice;
             this.comments = data.comments;
           },
           (error) => {
@@ -64,7 +64,6 @@ export class BlogComponent implements OnInit {
           }
         );
       } else {
-        // User is not authenticated, fetch blog details using the unauthenticated API
         this.blogService.getUnauthenticatedBlogDetails(blogId).subscribe(
           (data: any) => {
             this.blog = data.blog;
@@ -100,7 +99,7 @@ export class BlogComponent implements OnInit {
   
     this.http.post(url, payload, { headers }).subscribe(
       (response: any) => {
-        this.userLikeChoice = 'like'; // Ensure that this assignment is correct
+        this.userLikeChoice = 'like';
         this.fetchBlogDetails(this.route.snapshot.paramMap);
       },
     );
@@ -134,15 +133,14 @@ export class BlogComponent implements OnInit {
 
   openCommentDialog(): void {
     const dialogRef = this.dialog.open(CommentDialogComponent, {
-      width: '250px', // Adjust width as needed
+      width: '250px',
       data: {
-        blogId: this.blog.id // Pass the blogId as data
+        blogId: this.blog.id
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      // You can handle the result of the dialog here
     });
   }
 

@@ -164,33 +164,34 @@ class BlogView(APIView):  # Definicija pogleda za CRUD operacije s blogovima
                 'message': 'Something went wrong'  # Poruka o grešci
             }, status=status.HTTP_400_BAD_REQUEST)  # Status greške
             
-class BlogDetailView(APIView):
+class BlogDetailView(generics.RetrieveAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = []
 
-    def get_object(self, pk):
+    def get_object(self):
         try:
-            return Blog.objects.get(pk=pk)
+            instance = super().get_object()
+            return instance
         except Blog.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs):
         try:
-            instance = self.get_object(pk)
-            serializer = self.serializer_class(instance)
+            instance = self.get_object()
+            serializer = self.get_serializer(instance)
 
             comments = instance.comments.all()
             comment_serializer = CommentSerializer(comments, many=True)
 
             return Response({
                 'blog': serializer.data,
-                'comments': comment_serializer.data
+                'comments': comment_serializer.data,
+                'user_like_choice': serializer.data['user_like_choice']
             })
 
         except Http404: 
             return Response({'message': 'Blog not found'}, status=status.HTTP_404_NOT_FOUND)
-
 
 """Ovaj dio se odnosi na komentiranje"""
 class CommentListView(generics.ListCreateAPIView):
@@ -211,7 +212,6 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
 class LikeBlogView(APIView):
     permission_classes = [IsAuthenticated]  # Definiranje prava pristupa
     authentication_classes = [JWTAuthentication]  # Definiranje metoda autentifikacije
-
     def post(self, request, blog_id):
         try:
             blog = Blog.objects.get(pk=blog_id)  # Dohvaćanje bloga na koji se dodaje like/dislike

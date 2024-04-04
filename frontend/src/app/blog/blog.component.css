@@ -1,42 +1,83 @@
-/* Adjust blog post container */
-.blog-post {
+.center-content {
     display: flex;
-    justify-content: flex-end; /* Move items to the right */
-    margin-bottom: 25px;
-    height: 400px; /* Set maximum width */
-    width: 400px; /* Set maximum width */
-    padding: 25px 25px; /* Add padding on both ends */
-    margin: 25px 25px; /* Center the container horizontally */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
-/* Adjust blog post content */
+.bold-title {
+    font-weight: bold;
+}
+
+.blog-text {
+    font-size: 1.2rem; /* Adjust the size as needed */
+}
+
+.title-line {
+    border: none;
+    border-top: 2px solid black;
+    width: 75%; /* Adjust the length as needed */
+    margin: 15px auto; /* Adjust the margin as needed */
+}
+
+.like-dislike {
+    display: flex;
+    justify-content: center; /* Aligns items to the right */
+    align-items: center;
+    margin-top: 10px; /* Adjust the margin as needed */
+}
+
+.num-of-likes {
+    margin-bottom: 5px; /* Adjust the margin as needed */
+}
+
+.like-button, .dislike-button {
+    padding: 8px 16px; /* Adjust padding as needed */
+    border: 1px solid #ccc; /* Border styles */
+    border-radius: 5px; /* Border radius for rounded corners */
+    margin: 0 5px; /* Adjust margin as needed */
+    cursor: pointer; /* Cursor style */
+}
+
+.like-button:hover, .dislike-button:hover {
+    background-color: #f0f0f0; /* Background color on hover */
+}
+
+.liked {
+    border-color: rgb(0, 0, 189); /* Change border color to blue for liked button */
+}
+
+.disliked {
+    border-color: rgb(0, 0, 189); /* Change border color to blue for liked button */
+}
+
+.comments-title {
+    display: flex;
+    justify-content: center; /* Aligns items to the right */   
+}
+
+/* Styles for comments */
+.comment {
+    padding: 10px; /* Padding for comments */
+    margin-bottom: 10px; /* Margin between comments */
+}
+
+/* Adjust comment title */
+.comment strong {
+    font-size: 1rem; /* Font size for comment username */
+    margin-bottom: 3px; /* Margin below comment username */
+}
+
+/* Adjust comment text */
+.comment .card-text {
+    font-size: 0.9rem; /* Font size for comment text */
+    margin-bottom: 0; /* Remove margin below comment text */
+}
+
 .blog-post .col {
-    padding: 15px; /* Add padding to the content */
+    padding: 10px; /* Reduce padding to make it smaller */
 }
 
-/* Adjust blog post title */
-.blog-post .col strong {
-    margin-bottom: 10px; /* Add margin below the title */
-}
 
-/* Adjust blog post date */
-.blog-post .col .text-body-secondary {
-    margin-bottom: 10px; /* Add margin below the date */
-}
 
-/* Adjust blog post text */
-.blog-post .col .card-text {
-    margin-bottom: 10px; /* Add margin below the text */
-}
-
-/* Adjust "Continue reading" link */
-.blog-post .col .icon-link {
-    display: inline-block;
-    color: #007bff; /* Change link color */
-}
-
-/* Adjust link icon */
-.blog-post .col .icon-link svg {
-    vertical-align: middle;
-}
 

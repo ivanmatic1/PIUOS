@@ -168,6 +168,7 @@ class BlogDetailView(APIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = []
+    authentication_classes = []
 
     def get_object(self, pk):
         try:

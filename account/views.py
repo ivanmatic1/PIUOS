@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import status
 from django.core.paginator import Paginator
+
 class RegisterView(APIView): #view za registraciju korisnika
     
     def post(self, request): #funkcija za postanje podataka za registraciju
@@ -108,6 +109,7 @@ class UserListView(APIView):
                 'message' : 'Something went wrong'
 
             }, status = status.HTTP_400_BAD_REQUEST)
+        
 class UserDetailView(APIView):
     def get(self, request):
         try:

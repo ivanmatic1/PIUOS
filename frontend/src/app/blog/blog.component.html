@@ -1,15 +1,29 @@
-<div class="row mb-2">
-    <div class="col-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-                <strong class="d-inline-block mb-2 text-primary-emphasis">{{ blog.title }}</strong>
-                <div class="mb-1 text-body-secondary">{{ blog.created_at }}</div>
-                <p class="card-text mb-auto">{{ blog.blog_text }}</p>
-                <a class="icon-link gap-1 icon-link-hover stretched-link">
-                    Continue reading
-                    <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-                </a>
-            </div>
+<div class="row g-5 center-content">
+    <article class="blog-post">
+        <h2 class="display-5 mb-1 bold-title">{{ blog?.title }}</h2>
+        <p class="blog-post-meta">{{ blog?.created_at }} created by <a href="#">{{ blog?.user_name }}</a></p>
+        <p class="blog-text">{{ blog?.blog_text }}</p>
+        <hr class="title-line">
+        <div class="num-of-likes">
+            <span class="like-count">Liked by: {{ blog?.likes.like_number }}</span>
         </div>
-    </div>
+        <div class="like-dislike">
+            <span class="like-button" *ngIf="isAuthenticated && userLikeChoice !== 'like'" (click)="likePost()">Like</span>
+            <span class="like-button liked" *ngIf="isAuthenticated && userLikeChoice === 'like'">Liked</span>
+            <span class="dislike-button" *ngIf="isAuthenticated && userLikeChoice !== 'dislike'" (click)="dislikePost()">Dislike</span>
+            <span class="dislike-button disliked" *ngIf="isAuthenticated && userLikeChoice === 'dislike'">Disliked</span>  
+        </div>
+        <hr class="title-line">
+        <h4 class="comments-title">Comments</h4>
+        <div *ngFor="let comment of comments" class="row mb-2 justify-content-center">
+            <div class="col-md-6">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">
+                    <div class="col p-3 d-flex flex-column position-static comment">
+                        <strong class="d-inline-block mb-1 text-primary-emphasis">{{ comment.user }}</strong>
+                        <p class="card-text">{{ comment.comment_text }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>     
+    </article>
 </div>

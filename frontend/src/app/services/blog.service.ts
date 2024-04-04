@@ -22,7 +22,12 @@ export class BlogService {
     return this.http.get<any>(`${this.apiUrl}/`, { headers });
   }
 
-  getBlogById(blogId: number): Observable<any> {
+  getUnauthenticatedBlogDetails(blogId: number): Observable<any> {
+    const url = `${this.apiUrl}/blog/${blogId}/`;
+    return this.http.get<any>(url);
+  }
+
+  getAuthenticatedBlogDetails(blogId: number): Observable<any> {
     const url = `${this.apiUrl}/blog/${blogId}/`;
     return this.http.get<any>(url);
   }

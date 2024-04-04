@@ -15,15 +15,22 @@
         </div>
         <hr class="title-line">
         <h4 class="comments-title">Comments</h4>
+        <h5 class="comments-title" *ngIf="isAuthenticated" (click)="openCommentDialog()">Add a comment</h5>
         <div *ngFor="let comment of comments" class="row mb-2 justify-content-center">
             <div class="col-md-6">
-                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">
-                    <div class="col p-3 d-flex flex-column position-static comment">
-                        <strong class="d-inline-block mb-1 text-primary-emphasis">{{ comment.user }}</strong>
-                        <p class="card-text">{{ comment.comment_text }}</p>
-                    </div>
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">
+                <div class="col p-3 d-flex flex-column position-static comment">
+                  <strong class="d-inline-block mb-1 text-primary-emphasis">{{ comment.user }}</strong>
+                  <p class="card-text">{{ comment.comment_text }}</p>
+                  <div class="button-group">
+                    <!-- Edit button -->
+                    <button *ngIf="comment.user === loggedInUser" class="btn btn-sm btn-primary btn-smaller" >Edit</button>
+                    <!-- Delete button -->
+                    <button *ngIf="comment.user === loggedInUser" class="btn btn-sm btn-danger btn-smaller" >Delete</button>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>     
+        </div> 
     </article>
 </div>

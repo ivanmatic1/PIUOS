@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { NgIf, NgFor } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpClientModule  } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
 
 @Component({
   selector: 'app-blog',
@@ -18,12 +20,14 @@ export class BlogComponent implements OnInit {
   comments: any[] = [];
   isAuthenticated = false;
   userLikeChoice: string | undefined;
+  loggedInUser: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService,
     private authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +39,11 @@ export class BlogComponent implements OnInit {
     this.authService.isAuthenticated().subscribe(isAuthenticated => {
       this.isAuthenticated = isAuthenticated;
     });
+
+    this.authService.getUsername().subscribe(username => {
+      this.loggedInUser = username;
+    });
+    
   }
 
   fetchBlogDetails(params: any): void {
@@ -42,18 +51,32 @@ export class BlogComponent implements OnInit {
 
     if (idParam !== null && !isNaN(+idParam)) {
       const blogId = +idParam;
-      this.blogService.getBlogById(blogId).subscribe(
-        (data: any) => {
-          this.blog = data.blog;
-          this.userLikeChoice = data.blog.likes.user_like_choice;
-          this.comments = data.comments;
-        },
-        (error) => {
-          console.error('Error fetching blog details:', error);
-        }
-      );
+      if (this.isAuthenticated) {
+        // User is authenticated, fetch blog details using the authenticated API
+        this.blogService.getAuthenticatedBlogDetails(blogId).subscribe(
+          (data: any) => {
+            this.blog = data.blog;
+            this.userLikeChoice = data.blog.likes.user_like_choice;
+            this.comments = data.comments;
+          },
+          (error) => {
+            console.error('Error fetching blog details:', error);
+          }
+        );
+      } else {
+        // User is not authenticated, fetch blog details using the unauthenticated API
+        this.blogService.getUnauthenticatedBlogDetails(blogId).subscribe(
+          (data: any) => {
+            this.blog = data.blog;
+            this.comments = data.comments;
+          },
+          (error) => {
+            console.error('Error fetching blog details:', error);
+          }
+        );
+      }
     } else {
-      alert('Wrong id!')
+      alert('Wrong id!');
     }
   }
 
@@ -108,4 +131,19 @@ export class BlogComponent implements OnInit {
       },
     );
   }
+
+  openCommentDialog(): void {
+    const dialogRef = this.dialog.open(CommentDialogComponent, {
+      width: '250px', // Adjust width as needed
+      data: {
+        blogId: this.blog.id // Pass the blogId as data
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // You can handle the result of the dialog here
+    });
+  }
+
 }

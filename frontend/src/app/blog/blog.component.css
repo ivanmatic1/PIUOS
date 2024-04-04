@@ -79,8 +79,9 @@
 }
 
 .btn-smaller {
-    padding: 0.20rem 0.25rem; /* Adjust padding as needed */
+    padding: 0.25rem 0.25rem; /* Adjust padding as needed */
     font-size: 0.55rem; /* Adjust font size as needed */
+    margin-right: 5px;
 }
 
 

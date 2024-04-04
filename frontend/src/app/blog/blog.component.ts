@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogService } from '../services/blog.service';
-import { ActivatedRoute } from '@angular/router'; 
+import { ActivatedRoute, Router } from '@angular/router'; 
 import { AuthService } from '../services/auth.service';
 import { NgIf, NgFor } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpClientModule  } from '@angular/common/http';
@@ -27,6 +27,7 @@ export class BlogComponent implements OnInit {
     private blogService: BlogService,
     private authService: AuthService,
     private http: HttpClient,
+    private router: Router,
     public dialog: MatDialog
   ) { 
     this.userLikeChoice = null;
@@ -142,6 +143,34 @@ export class BlogComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  deleteComment(commentId: number) {
+    const token: string | null = localStorage.getItem('loginToken');
+
+    if (!token) {
+      console.error('Token is missing!');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    const url = 'http://127.0.0.1:8000/comments/'+commentId;
+    this.http.delete(url, { headers }).subscribe(
+      (response: any) => {
+        alert('Comment removed')
+        this.reloadCurrentRoute();
+      },
+    );
+  }
+
+  reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]); // Navigate to the current URL
+  });
   }
 
 }

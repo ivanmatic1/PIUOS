@@ -22,11 +22,11 @@
                 <div class="col p-3 d-flex flex-column position-static comment">
                   <strong class="d-inline-block mb-1 text-primary-emphasis">{{ comment.user }}</strong>
                   <p class="card-text">{{ comment.comment_text }}</p>
-                  <div class="button-group">
+                  <div *ngIf="comment.user === loggedInUser" class="button-group">
                     <!-- Edit button -->
-                    <button *ngIf="comment.user === loggedInUser" class="btn btn-sm btn-primary btn-smaller" >Edit</button>
+                    <button class="btn btn-sm btn-primary btn-smaller">Edit</button>
                     <!-- Delete button -->
-                    <button *ngIf="comment.user === loggedInUser" class="btn btn-sm btn-danger btn-smaller" >Delete</button>
+                    <button class="btn btn-sm btn-danger btn-smaller" (click)="deleteComment(comment.id)">Delete</button>
                   </div>
                 </div>
               </div>

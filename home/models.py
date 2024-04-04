@@ -46,11 +46,10 @@ class Blog(BaseModel):
         return self.likes.filter(user=user).exists()
 
     def get_user_like_choice(self, user):
-            if user.is_authenticated:  # Provjera je li korisnik autenticiran
-                like = self.likes.filter(user=user).first()  # Dohvaćanje lajka/dislajka ako postoji
-                if like:
-                    return like.like_choice  # Vraćanje odabira lajka/dislajka
-            return None  # Vraćanje None ako korisnik nije autenticiran ili ako nije lajkao/dislajkao
+        like = self.likes.filter(user=user).first()
+        if like:
+            return like.like_choice
+        return None
     
 # Model komentara s vezama prema korisniku i blogu
 class Comment(models.Model):

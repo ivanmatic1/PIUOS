@@ -164,31 +164,61 @@ class BlogView(APIView):  # Definicija pogleda za CRUD operacije s blogovima
                 'message': 'Something went wrong'  # Poruka o grešci
             }, status=status.HTTP_400_BAD_REQUEST)  # Status greške
             
-class BlogDetailView(generics.RetrieveAPIView):
+class BlogDetailView(APIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = []
-    authentication_classes = []
 
-    def get_object(self):
+    def get_object(self, pk):
         try:
-            instance = super().get_object()
-            return instance
+            return Blog.objects.get(pk=pk)
         except Blog.DoesNotExist:
             raise Http404
 
-    def retrieve(self, request, *args, **kwargs):
+    def get(self, request, pk, *args, **kwargs):
         try:
-            instance = self.get_object()
-            serializer = self.get_serializer(instance)
+            instance = self.get_object(pk)
+            serializer = self.serializer_class(instance)
 
             comments = instance.comments.all()
             comment_serializer = CommentSerializer(comments, many=True)
 
             return Response({
                 'blog': serializer.data,
+                'comments': comment_serializer.data
+            })
+
+        except Http404: 
+            return Response({'message': 'Blog not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+class BlogLoggedDetailView(APIView):
+    permission_classes = [IsAuthenticated]  # Dodajemo autentikaciju jer želimo pokazati podatke samo autenticiranim korisnicima
+
+    def get_object(self, pk):
+        try:
+            return Blog.objects.get(pk=pk)
+        except Blog.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, *args, **kwargs):
+        try:
+            instance = self.get_object(pk)
+            serializer = BlogSerializer(instance)
+
+            comments = instance.comments.all()
+            comment_serializer = CommentSerializer(comments, many=True)
+
+            # Dohvaćanje informacija o lajkovima i dislajkovima za trenutnog korisnika
+            user_likes = {}
+            likes = Like.objects.filter(user=request.user, blog=instance)
+            if likes.exists():
+                user_like = likes.first()
+                user_likes['like_choice'] = user_like.like_choice
+
+            return Response({
+                'blog': serializer.data,
                 'comments': comment_serializer.data,
-                'user_like_choice': serializer.data['user_like_choice']
+                'user_likes': user_likes  # Slanje podataka o lajkovima i dislajkovima korisnika
             })
 
         except Http404: 

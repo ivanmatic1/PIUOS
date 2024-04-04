@@ -20,17 +20,6 @@ class BlogSerializer(serializers.ModelSerializer):
             'dislike_number': obj.likes.filter(like_choice='dislike').count(),  # Broj dislajkova na blogu
             'user_like_choice': obj.get_user_like_choice(self.context['request'].user) if self.context.get('request') else None  # Izbor korisnika (lajk, dislajk, ili None ako korisnik nije lajkao)
         }
-    user_like_choice = serializers.SerializerMethodField()  # Dodajemo SerializerMethodField
-
-    def get_user_like_choice(self, obj):
-        request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return obj.get_user_like_choice(request.user)
-        return None
-
-    class Meta:
-        model = Blog
-        fields = '__all__'  # Uključujemo sva polja modela
 
 # Serializer za User modele
 class UserSerializer(serializers.ModelSerializer):

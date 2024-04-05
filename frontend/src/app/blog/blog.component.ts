@@ -6,6 +6,8 @@ import { NgIf, NgFor } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpClientModule  } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
+import { CommentEditDialogComponent } from '../comment-edit-dialog/comment-edit-dialog.component';
+import { BlogEditDialogComponent } from '../blog-edit-dialog/blog-edit-dialog.component';
 
 @Component({
   selector: 'app-blog',
@@ -145,6 +147,36 @@ export class BlogComponent implements OnInit {
     });
   }
 
+  openCommentEditDialog(commentId: number, commentText: string) {
+    const dialogRef = this.dialog.open(CommentEditDialogComponent, {
+      width: '250px',
+      data: {
+        commentId: commentId ,
+        commentText: commentText
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  openBlogEditDialog() {
+    const dialogRef = this.dialog.open(BlogEditDialogComponent, {
+      width: '500px',
+      data: {
+        blogId: this.blog.id ,
+        blogTitle: this.blog.title,
+        blogText: this.blog.blog_text,
+        blogCategory: this.blog.category
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
   deleteComment(commentId: number) {
     const token: string | null = localStorage.getItem('loginToken');
 
@@ -162,6 +194,30 @@ export class BlogComponent implements OnInit {
       (response: any) => {
         alert('Comment removed')
         this.reloadCurrentRoute();
+      },
+    );
+  }
+
+  deleteBlog(blogId: number) {
+    const token: string | null = localStorage.getItem('loginToken');
+
+    if (!token) {
+      console.error('Token is missing!');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    const data = { id: blogId };
+    
+    const url = 'http://127.0.0.1:8000/blog/';
+    this.http.delete(url,{ headers, body: data}).subscribe(
+      (response: any) => {
+        alert('Blog removed')
+        this.router.navigate(['/']); 
       },
     );
   }

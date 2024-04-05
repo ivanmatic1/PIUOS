@@ -9,7 +9,7 @@ class BlogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Blog  # Postavljanje modela na Blog
-        fields = ['id', 'title', 'blog_text', 'user', 'comments', 'user_name', 'likes', 'created_at']  # Polja koja će biti uključena u serijalizaciju
+        fields = ['id', 'title', 'blog_text', 'user', 'comments', 'user_name', 'likes', 'created_at', 'category']  # Polja koja će biti uključena u serijalizaciju
 
     def get_user_name(self, obj):
         return obj.user.username  # Metoda koja vraća korisničko ime autora bloga

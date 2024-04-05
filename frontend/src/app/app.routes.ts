@@ -4,6 +4,8 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { CreateblogComponent } from './createblog/createblog.component';
 import { BlogComponent } from './blog/blog.component';
+import { ViewPersonalInformationComponent } from './view-personal-information/view-personal-information.component';
+import { ViewProfileComponent } from './view-profile/view-profile.component';
 
 export const routes: Routes = [
     {
@@ -21,6 +23,14 @@ export const routes: Routes = [
     {
         path: 'create',
         component: CreateblogComponent
+    },
+    {
+        path: 'profile',
+        component: ViewPersonalInformationComponent
+    },
+    {
+        path: 'user/:username',
+        component: ViewProfileComponent
     },
     {
         path: 'blog/:id',

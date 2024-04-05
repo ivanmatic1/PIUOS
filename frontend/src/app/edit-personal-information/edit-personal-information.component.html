@@ -1,0 +1,12 @@
+<div mat-dialog-content class="blog-dialog-content">
+    <h1>Edit profile</h1>
+    <h3>Username</h3>
+    <textarea matInput [(ngModel)]="username" class="blog-textarea-title">{{this.username}}</textarea>
+    <h3>First name</h3>
+    <textarea matInput [(ngModel)]="firstname" class="blog-textarea-text">{{this.firstname}}</textarea>
+    <h3>Last name</h3>
+    <textarea matInput [(ngModel)]="lastname" class="blog-textarea-text">{{this.lastname}}</textarea>
+  <div mat-dialog-actions class="blog-dialog-actions">
+    <button class="btn btn-secondary custom-btn-margin w-45 h-20 py-1" (click)="cancel()" >Cancel</button>
+    <button class="btn btn-primary w-45 h-20 py-1" (click)="onSubmit()">Save</button>
+  </div>

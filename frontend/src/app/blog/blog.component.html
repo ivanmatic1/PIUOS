@@ -2,7 +2,9 @@
     <article class="blog-post">
         <h2 class="display-5 mb-1 bold-title">{{ blog?.title }}</h2>
         <h4 class="display-7 mb-1 bold-title">{{ blog?.category }}</h4>
-        <p class="blog-post-meta">{{ blog?.created_at }} created by <a href="#">{{ blog?.user_name }}</a></p>
+        <p class="blog-post-meta">{{ blog?.created_at }} created by 
+          <a routerLink="/user/{{ blog.user_name }}">{{ blog?.user_name }}</a>
+        </p>
         <p class="blog-text">{{ blog?.blog_text }}</p>
         <div *ngIf="blog.user_name === loggedInUser" class="button-group">
           <button class="btn btn-sm btn-primary btn-smaller" (click)="openBlogEditDialog()">Edit</button>

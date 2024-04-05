@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogService } from '../services/blog.service';
-import { ActivatedRoute, Router } from '@angular/router'; 
+import { ActivatedRoute, Router, RouterModule } from '@angular/router'; 
 import { AuthService } from '../services/auth.service';
 import { NgIf, NgFor } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpClientModule  } from '@angular/common/http';
@@ -12,7 +12,7 @@ import { BlogEditDialogComponent } from '../blog-edit-dialog/blog-edit-dialog.co
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [NgIf, HttpClientModule, NgFor],
+  imports: [NgIf, HttpClientModule, NgFor, RouterModule],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.css'
 })

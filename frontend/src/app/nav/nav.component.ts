@@ -26,9 +26,9 @@ export class NavComponent implements OnInit {
     this.authService.getUsername().subscribe((username: string) => {
       this.username = username;
     });
-    
-  }
 
+  }
+  
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
   }

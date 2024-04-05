@@ -14,7 +14,7 @@
         <div class="num-of-likes">
             <span class="like-count">Liked by: {{ blog?.likes.like_number }}</span>
         </div>
-        <div class="like-dislike">
+        <div class="like-dislike" *ngIf="isAuthenticated" >
             <span class="like-button" *ngIf="userLikeChoice !== 'like'" (click)="likePost()">Like</span>
             <span class="like-button liked" *ngIf="userLikeChoice === 'like'">Liked</span>
             <span class="dislike-button" *ngIf="userLikeChoice !== 'dislike'" (click)="dislikePost()">Dislike</span>

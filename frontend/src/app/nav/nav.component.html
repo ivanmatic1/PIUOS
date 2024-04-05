@@ -27,8 +27,7 @@
           Welcome, {{ username }}
         </a>
         <ul *ngIf="dropdownOpen" class="dropdown-menu d-grid gap-1 p-2 rounded-3 mx-0 shadow w-220px" [class.show]="dropdownOpen" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item">View Profile</a></li>
-          <li><a class="dropdown-item">Edit</a></li>
+          <li><a class="dropdown-item" routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page" >View Profile</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a (click)="logout()" class="dropdown-item">Logout</a></li>
         </ul>

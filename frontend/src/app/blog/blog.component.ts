@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogService } from '../services/blog.service';
-import { ActivatedRoute } from '@angular/router'; 
+import { ActivatedRoute, Router, RouterModule } from '@angular/router'; 
 import { AuthService } from '../services/auth.service';
 import { NgIf, NgFor } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpClientModule  } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
+import { CommentEditDialogComponent } from '../comment-edit-dialog/comment-edit-dialog.component';
+import { BlogEditDialogComponent } from '../blog-edit-dialog/blog-edit-dialog.component';
 
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [NgIf, HttpClientModule, NgFor],
+  imports: [NgIf, HttpClientModule, NgFor, RouterModule],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.css'
 })
@@ -17,43 +21,64 @@ export class BlogComponent implements OnInit {
   blog: any;
   comments: any[] = [];
   isAuthenticated = false;
-  userLikeChoice: string | undefined;
+  userLikeChoice: string | null;
+  loggedInUser: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService,
     private authService: AuthService,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private router: Router,
+    public dialog: MatDialog
+  ) { 
+    this.userLikeChoice = null;
+  }
 
   ngOnInit(): void {
-
-    this.route.paramMap.subscribe(params => {
-      this.fetchBlogDetails(params);
-    });
 
     this.authService.isAuthenticated().subscribe(isAuthenticated => {
       this.isAuthenticated = isAuthenticated;
     });
+
+    this.authService.getUsername().subscribe(username => {
+      this.loggedInUser = username;
+    });
+
+    this.route.paramMap.subscribe(params => {
+      this.fetchBlogDetails(params);
+    });
+    
   }
 
   fetchBlogDetails(params: any): void {
     const idParam = params.get('id');
-
     if (idParam !== null && !isNaN(+idParam)) {
       const blogId = +idParam;
-      this.blogService.getBlogById(blogId).subscribe(
-        (data: any) => {
-          this.blog = data.blog;
-          this.userLikeChoice = data.blog.likes.user_like_choice;
-          this.comments = data.comments;
-        },
-        (error) => {
-          console.error('Error fetching blog details:', error);
-        }
-      );
+      if (this.isAuthenticated) {
+        this.blogService.getAuthenticatedBlogDetails(blogId).subscribe(
+          (data: any) => {
+            this.blog = data.blog;
+            this.userLikeChoice = data.user_likes.like_choice;
+            this.comments = data.comments;
+          },
+          (error) => {
+            console.error('Error fetching blog details:', error);
+          }
+        );
+      } else {
+        this.blogService.getUnauthenticatedBlogDetails(blogId).subscribe(
+          (data: any) => {
+            this.blog = data.blog;
+            this.comments = data.comments;
+          },
+          (error) => {
+            console.error('Error fetching blog details:', error);
+          }
+        );
+      }
     } else {
-      alert('Wrong id!')
+      alert('Wrong id!');
     }
   }
 
@@ -77,7 +102,7 @@ export class BlogComponent implements OnInit {
   
     this.http.post(url, payload, { headers }).subscribe(
       (response: any) => {
-        this.userLikeChoice = 'like'; // Ensure that this assignment is correct
+        this.userLikeChoice = 'like';
         this.fetchBlogDetails(this.route.snapshot.paramMap);
       },
     );
@@ -108,4 +133,100 @@ export class BlogComponent implements OnInit {
       },
     );
   }
+
+  openCommentDialog(): void {
+    const dialogRef = this.dialog.open(CommentDialogComponent, {
+      width: '250px',
+      data: {
+        blogId: this.blog.id
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  openCommentEditDialog(commentId: number, commentText: string) {
+    const dialogRef = this.dialog.open(CommentEditDialogComponent, {
+      width: '250px',
+      data: {
+        commentId: commentId ,
+        commentText: commentText
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  openBlogEditDialog() {
+    const dialogRef = this.dialog.open(BlogEditDialogComponent, {
+      width: '500px',
+      data: {
+        blogId: this.blog.id ,
+        blogTitle: this.blog.title,
+        blogText: this.blog.blog_text,
+        blogCategory: this.blog.category
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  deleteComment(commentId: number) {
+    const token: string | null = localStorage.getItem('loginToken');
+
+    if (!token) {
+      console.error('Token is missing!');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    const url = 'http://127.0.0.1:8000/comments/'+commentId;
+    this.http.delete(url, { headers }).subscribe(
+      (response: any) => {
+        alert('Comment removed')
+        this.reloadCurrentRoute();
+      },
+    );
+  }
+
+  deleteBlog(blogId: number) {
+    const token: string | null = localStorage.getItem('loginToken');
+
+    if (!token) {
+      console.error('Token is missing!');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    const data = { id: blogId };
+    
+    const url = 'http://127.0.0.1:8000/blog/';
+    this.http.delete(url,{ headers, body: data}).subscribe(
+      (response: any) => {
+        alert('Blog removed')
+        this.router.navigate(['/']); 
+      },
+    );
+  }
+
+  reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]); // Navigate to the current URL
+  });
+  }
+
 }

@@ -1,0 +1,8 @@
+<div mat-dialog-content class="comment-dialog-content">
+    <h1>Add a Comment</h1>
+    <textarea matInput [(ngModel)]="commentText" placeholder="Enter your comment" class="comment-textarea"></textarea>
+  </div>
+  <div mat-dialog-actions class="comment-dialog-actions">
+    <button class="btn btn-secondary custom-btn-margin w-45 h-20 py-1" (click)="cancel()" >Cancel</button>
+    <button class="btn btn-primary w-45 h-20 py-1" (click)="onSubmit()" >Submit</button>
+  </div>

@@ -1,0 +1,20 @@
+<div mat-dialog-content class="blog-dialog-content">
+    <h1>Edit a blog</h1>
+    <h2>Title</h2>
+    <textarea matInput [(ngModel)]="blogTitle" class="blog-textarea-title">{{this.blogTitle}}</textarea>
+    <h3>Text</h3>
+    <textarea matInput [(ngModel)]="blogText" class="blog-textarea-text">{{this.blogText}}</textarea>
+    <div class="form-floating">
+        <select type="category" class="form-control" name="category" id="idcategory" required [(ngModel)]="blogCategory">
+            <option value="" disabled>Select a category</option>
+            <option value="SPORT" [selected]="blogCategory === 'SPORT'">Sport</option>
+            <option value="LIFESTYLE" [selected]="blogCategory === 'LIFESTYLE'">Lifestyle</option>
+            <option value="TECHNOLOGY" [selected]="blogCategory === 'TECHNOLOGY'">Technology</option>
+        </select>
+        <label for="idcategory">Category</label>
+    </div>
+    
+  <div mat-dialog-actions class="blog-dialog-actions">
+    <button class="btn btn-secondary custom-btn-margin w-45 h-20 py-1" (click)="cancel()" >Cancel</button>
+    <button class="btn btn-primary w-45 h-20 py-1" (click)="onSubmit()">Save</button>
+  </div>

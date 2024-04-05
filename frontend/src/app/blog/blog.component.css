@@ -78,6 +78,13 @@
     padding: 10px; /* Reduce padding to make it smaller */
 }
 
-
+.btn-smaller {
+    padding: 0.25rem 0.25rem; /* Adjust padding as needed */
+    font-size: 0.55rem; /* Adjust font size as needed */
+    margin-right: 5px;
+}
+.display-7 {
+    font-size: small; /* Adjust the font size as needed */
+  }
 
 

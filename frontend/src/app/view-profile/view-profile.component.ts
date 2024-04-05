@@ -36,15 +36,8 @@ export class ViewProfileComponent implements OnInit {
   }
 
   fetchUserProfile(username: string): void {
-    const token: string | null = localStorage.getItem('loginToken');
-
-    // Include the token in the HTTP headers
-    const headers = new HttpHeaders({
-      'Authorization': token ? `Bearer ${token}` : ' ' // Include empty token if no token found
-    });
-
     const url = `http://127.0.0.1:8000/api/account/user/?username=${username}`;
-    this.http.get(url, { headers }).subscribe(
+    this.http.get(url).subscribe(
       (response: any) => {
         if (response.data && response.data.length > 0) {
           const userData = response.data[0]; // Get the first user data object
@@ -58,7 +51,6 @@ export class ViewProfileComponent implements OnInit {
         console.error('Error fetching user profile:', error);
       }
     );
-    
   }
 }
 

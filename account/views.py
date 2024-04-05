@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework import status, viewsets
 from .serializer import RegisterSerializer, LoginSerializer, UserProfileSerializer, UserListSerializer
 from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import status
@@ -111,6 +111,7 @@ class UserListView(APIView):
             }, status = status.HTTP_400_BAD_REQUEST)
         
 class UserDetailView(APIView):
+
     def get(self, request):
         try:
             username = request.GET.get('username')

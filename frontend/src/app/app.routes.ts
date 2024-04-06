@@ -7,6 +7,7 @@ import { BlogComponent } from './blog/blog.component';
 import { ViewPersonalInformationComponent } from './view-personal-information/view-personal-information.component';
 import { ViewProfileComponent } from './view-profile/view-profile.component';
 import { SearchComponent } from './search/search.component';
+import { FilterComponent } from './filter/filter.component';
 
 export const routes: Routes = [
     {
@@ -40,6 +41,10 @@ export const routes: Routes = [
     { 
         path: 'search/:query',
         component: SearchComponent 
+    },
+    { 
+        path: 'filter/:category',
+        component: FilterComponent 
     },
 ];
 

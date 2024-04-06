@@ -13,21 +13,23 @@
       </ul>
       <div class="container">
         <div class="row">
-          <div class="col-md-6 offset-md-6 d-flex right-align"> <!-- Use offset and d-flex to align to the right -->
+          <div class="col-md-6 offset-md-6 d-flex justify-content-end"> <!-- Use offset and d-flex to align to the right -->
             <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Select Category
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" >Lifestyle</a>
-                <a class="dropdown-item" >Sport</a>
-                <a class="dropdown-item" >Technology</a>
+                <a class="dropdown-item" (click)="filterBlogs('Lifestyle')">Lifestyle</a>
+                <a class="dropdown-item" (click)="filterBlogs('Sport')">Sport</a>
+                <a class="dropdown-item" (click)="filterBlogs('Technology')">Technology</a>
+                <a class="dropdown-item" (click)="returnHome()">Clear filter</a>
               </div>
             </div>
             <button class="btn btn-primary ms-2">Apply</button> 
           </div>
         </div>
       </div>
+      
       
       <form (ngSubmit)="search()">
         <div class="input-group">

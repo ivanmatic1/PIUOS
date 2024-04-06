@@ -33,6 +33,17 @@ export class BlogService {
     return this.http.get<any>(url, { headers });
   }
 
+  filterBlog(query: string): Observable<any> {
+    const token: string | null = localStorage.getItem('loginToken');
+    const headers = new HttpHeaders({
+      'Authorization': token ? `Bearer ${token}` : ''
+    });
+
+    const url = `${this.apiUrl}/?search=${query}`;
+
+    return this.http.get<any>(url, { headers });
+  }
+
   getUnauthenticatedBlogDetails(blogId: number): Observable<any> {
     const url = `${this.apiUrl}/blog/${blogId}/`;
     return this.http.get<any>(url);

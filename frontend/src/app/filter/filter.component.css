@@ -1,0 +1,42 @@
+/* Adjust blog post container */
+.blog-post {
+    display: flex;
+    justify-content: flex-end; /* Move items to the right */
+    margin-bottom: 25px;
+    height: 400px; /* Set maximum width */
+    width: 400px; /* Set maximum width */
+    padding: 25px 25px; /* Add padding on both ends */
+    margin: 25px 25px; /* Center the container horizontally */
+}
+
+/* Adjust blog post content */
+.blog-post .col {
+    padding: 15px; /* Add padding to the content */
+}
+
+/* Adjust blog post title */
+.blog-post .col strong {
+    margin-bottom: 10px; /* Add margin below the title */
+}
+
+/* Adjust blog post date */
+.blog-post .col .text-body-secondary {
+    margin-bottom: 10px; /* Add margin below the date */
+}
+
+/* Adjust blog post text */
+.blog-post .col .card-text {
+    margin-bottom: 10px; /* Add margin below the text */
+}
+
+/* Adjust "Continue reading" link */
+.blog-post .col .icon-link {
+    display: inline-block;
+    color: #007bff; /* Change link color */
+}
+
+/* Adjust link icon */
+.blog-post .col .icon-link svg {
+    vertical-align: middle;
+}
+

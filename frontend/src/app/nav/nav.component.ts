@@ -47,6 +47,14 @@ export class NavComponent implements OnInit {
     }
   }
 
+  filterBlogs(category: string): void {
+    this.router.navigate(['/filter/' , category]);
+}
+
+returnHome(): void{
+    this.router.navigate(['/']);
+}
+
   logout(): void {
     this.authService.logout();
   }

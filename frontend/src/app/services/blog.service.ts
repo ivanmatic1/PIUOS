@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -20,6 +20,17 @@ export class BlogService {
     });
 
     return this.http.get<any>(`${this.apiUrl}/`, { headers });
+  }
+
+  searchBlogs(query: string): Observable<any> {
+    const token: string | null = localStorage.getItem('loginToken');
+    const headers = new HttpHeaders({
+      'Authorization': token ? `Bearer ${token}` : ''
+    });
+
+    const url = `${this.apiUrl}/?search=${query}`;
+
+    return this.http.get<any>(url, { headers });
   }
 
   getUnauthenticatedBlogDetails(blogId: number): Observable<any> {

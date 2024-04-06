@@ -11,9 +11,30 @@
           <a routerLink="/create" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link createpost">Create a post</a>
         </li>
       </ul>
-      <form role="search">
-        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-      </form>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 offset-md-6 d-flex right-align"> <!-- Use offset and d-flex to align to the right -->
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Category
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" >Lifestyle</a>
+                <a class="dropdown-item" >Sport</a>
+                <a class="dropdown-item" >Technology</a>
+              </div>
+            </div>
+            <button class="btn btn-primary ms-2">Apply</button> 
+          </div>
+        </div>
+      </div>
+      
+      <form (ngSubmit)="search()">
+        <div class="input-group">
+          <input [(ngModel)]="query" name="query" class="form-control" type="search" placeholder="Search" (keyup.enter)="search()">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>   
     </div>
     <ul class="navbar-nav me-auto">
       <li *ngIf="!isAuthenticated" class="nav-item">

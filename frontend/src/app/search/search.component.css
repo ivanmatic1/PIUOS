@@ -1,9 +1,4 @@
 /* Adjust blog post container */
-.blog-container {
-    max-width: 99%;
-    margin: 0 auto;
-  }
-
 .blog-post {
     display: flex;
     justify-content: flex-end; /* Move items to the right */
@@ -44,4 +39,8 @@
 .blog-post .col .icon-link svg {
     vertical-align: middle;
 }
+
+.centered-title {
+    text-align: center;
+  }
 

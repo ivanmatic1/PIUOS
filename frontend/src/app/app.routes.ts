@@ -6,6 +6,7 @@ import { CreateblogComponent } from './createblog/createblog.component';
 import { BlogComponent } from './blog/blog.component';
 import { ViewPersonalInformationComponent } from './view-personal-information/view-personal-information.component';
 import { ViewProfileComponent } from './view-profile/view-profile.component';
+import { SearchComponent } from './search/search.component';
 
 export const routes: Routes = [
     {
@@ -35,6 +36,10 @@ export const routes: Routes = [
     {
         path: 'blog/:id',
         component: BlogComponent
+    },
+    { 
+        path: 'search/:query',
+        component: SearchComponent 
     },
 ];
 
